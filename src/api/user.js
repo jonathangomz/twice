@@ -3,7 +3,7 @@ const Router = require('express');
 const router = Router();
 
 router.get('/me', async (req, res) => {
-  const r = await spotify.me(req.headers.authorization);
+  const r = await spotify.user.me(req.headers.authorization);
   res.json(r);
 });
 

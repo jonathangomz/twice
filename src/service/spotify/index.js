@@ -1,11 +1,15 @@
 const axios = require('axios').default;
 const qs = require('querystring');
 
-const spotify = {};
+const spotify = {
+  auth: {},
+  user: {},
+  playlist: {},
+};
 
-spotify.grantURL = `https://accounts.spotify.com/authorize?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.CALLBACK}`;
+spotify.auth.grantURL = `https://accounts.spotify.com/authorize?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.CALLBACK}`;
 
-spotify.getToken = async (code) => {
+spotify.auth.token = async (code) => {
   let response, error;
   try {
     response = await axios.post('https://accounts.spotify.com/api/token', qs.stringify({
@@ -26,7 +30,7 @@ spotify.getToken = async (code) => {
   return response?.data || error
 }
 
-spotify.me = async (token) => {
+spotify.user.me = async (token) => {
   let response, error;
   try {
     response = await axios.get('https://api.spotify.com/v1/me', {
@@ -41,7 +45,7 @@ spotify.me = async (token) => {
   return response?.data || error
 }
 
-spotify.fetchPlaylists = async (user_id, token) => {
+spotify.playlist.fetch = async (user_id, token) => {
   let response, error;
   try {
     response = await axios.get(`https://api.spotify.com/v1/users/${user_id}/playlists`, { headers: { Authorization: token } });
@@ -52,7 +56,7 @@ spotify.fetchPlaylists = async (user_id, token) => {
   return response?.data || error
 }
 
-spotify.fetchPlaylistTracks = async (playlist, token) => {
+spotify.playlist.tracks = async (playlist, token) => {
   let response, error;
   try {
     response = await axios.get(`https://api.spotify.com/v1/playlists/${playlist}/tracks`, { headers: { Authorization: token } });
