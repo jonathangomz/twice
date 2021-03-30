@@ -3,15 +3,15 @@ const Router = require('express');
 const router = Router();
 
 router.get('/login', (req, res) => {
-  res.redirect(spotify.grantURL);
+  res.redirect(spotify.auth.grantURL);
 });
 
 router.get('/callback', (req, res) => {
   res.json(req.query);
 });
 
-router.get('/token', async (req, res) => {
-  const r = await spotify.getToken(req.body.code);
+router.post('/token', async (req, res) => {
+  const r = await spotify.auth.token(req.body.code);
   res.json(r);
 });
 
